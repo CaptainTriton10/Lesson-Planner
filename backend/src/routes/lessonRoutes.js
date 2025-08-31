@@ -14,4 +14,15 @@ router.post('/create', async (req, res) => {
   }
 });
 
+router.post('/delete', async (req, res) => {
+  try {
+    const { id } = req.body;
+
+    const lesson = await Lesson.findOneAndDelete({ _id: id });
+    if (!lesson) throw new Error('Lesson does not exist.');
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 export default router;

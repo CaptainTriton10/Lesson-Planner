@@ -1,43 +1,22 @@
 import { config } from 'dotenv';
 config();
 
-import express from 'express';
 import bcrypt from 'bcrypt';
-import User from '../models/User.js';
-import { MongoClient, ServerApiVersion } from 'mongodb';
+import express from 'express';
 import mongoose from 'mongoose';
+import User from '../models/User.js';
+import { uriMongoose } from '../mongodb.js';
 
 const router = express.Router();
 
-const mongoDbUsername = encodeURIComponent(process.env.USER_NAME);
-const mongoDbPassword = encodeURIComponent(process.env.USER_PASSWORD);
-const uriMain = process.env.URI;
-const uriMongooseMain = process.env.URI_MONGOOSE;
-
-const uri = `mongodb+srv://${mongoDbUsername}:${mongoDbPassword}${uriMain}`;
-const uriMongoose = `mongodb+srv://${mongoDbUsername}:${mongoDbPassword}${uriMongooseMain}`;
-
-// MongoDB client
-const client = new MongoClient(uri, {
-  serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true,
-  },
-  tls: true,
-  tlsAllowInvalidCertificates: false,
-});
-
 mongoose.connect(uriMongoose);
-
-const [_, users] = await client.db(process.env.DB_NAME).collections();
 
 router.post('/register', async (req, res) => {
   try {
     const user = new User(req.body);
 
     // Try to find username in DB
-    if (await users.findOne({ username: user.username })) {
+    if (await User.findOne({ username: user.username })) {
       throw new Error('User already registered');
     }
 
@@ -57,12 +36,10 @@ router.post('/login', async (req, res) => {
   try {
     const user = new User(req.body);
 
-    const userInDb = await users.findOne({ username: user.username }); // Try to find user in DB
+    const userInDb = await User.findOne({ username: user.username }); // Try to find user in DB
     if (!userInDb) {
       throw new Error('Username not found.');
     }
-
-    console.log(userInDb.password);
 
     // Compare passwords
     const passwordCorrect = await bcrypt.compare(

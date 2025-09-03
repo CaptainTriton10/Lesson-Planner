@@ -24,7 +24,7 @@ const client = new MongoClient(uri, {
 });
 
 /**@deprecated */
-const [lessons, users] = await client.db(process.env.DB_NAME).collections(); // Deprecated with mongoose
+// const [lessons, users] = client.db(process.env.DB_NAME).collections(); // Deprecated with mongoose
 
 export default client;
 export { uriMongoose };

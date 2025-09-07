@@ -10,10 +10,12 @@ import {
   RouterProvider,
 } from 'react-router-dom';
 import { Toaster } from './components/ui/sonner.tsx';
+import Today from './pages/Today.tsx';
 
 export const router = createBrowserRouter([
   { path: '/home', element: <Home /> },
   { path: '/login', element: <Login /> },
+  { path: '/today', element: <Today /> },
   { path: '/', element: <Navigate to={'/home'} /> },
 ]);
 

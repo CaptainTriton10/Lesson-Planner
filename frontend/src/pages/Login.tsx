@@ -10,7 +10,6 @@ import {
 import { Input } from '@/components/ui/input';
 import { Particles } from '@/components/ui/particles';
 import { loginUrl } from '@/lib/urls';
-import { router } from '@/main';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
@@ -45,6 +44,11 @@ function Login() {
     xhr.onload = () => {
       if (xhr.readyState == 4 && xhr.status < 300) {
         toast.success('Login successful.');
+
+        const token = JSON.parse(xhr.response).token;
+
+        localStorage.setItem('token', token);
+
         navigate('/home');
       } else {
         toast.error('Login unsuccessful');
@@ -57,48 +61,51 @@ function Login() {
   return (
     <div className="w-vw h-screen flex items-center justify-center">
       <div className="w-md flex flex-col gap-5">
-        <h1 className="text-4xl text-center mb-5">
-          <b>Login</b>
-        </h1>
-        <Form {...form}>
-          <form
-            className="flex flex-col gap-2.5"
-            onSubmit={form.handleSubmit(onSubmit)}
-          >
-            <FormField
-              control={form.control}
-              name="username"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Username</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Username" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            ></FormField>
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Password</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Password" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            ></FormField>
-            <Button type="submit">Login</Button>
-          </form>
-        </Form>
+        <div className="bg-white/1 backdrop-blur-sm p-5 rounded-xl border">
+          <h1 className="text-4xl text-center mb-5">
+            <b>Login</b>
+          </h1>
+          <Form {...form}>
+            <form
+              className="flex flex-col gap-4"
+              onSubmit={form.handleSubmit(onSubmit)}
+            >
+              <FormField
+                control={form.control}
+                name="username"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Username</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Username" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              ></FormField>
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Password</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Password" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              ></FormField>
+              <Button type="submit">Login</Button>
+            </form>
+          </Form>
+        </div>
       </div>
       <Particles
-        className="absolute inset-0"
+        className="absolute inset-0 -z-10"
         quantity={100}
         ease={80}
+        size={2}
         refresh
       />
     </div>

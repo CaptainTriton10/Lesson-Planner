@@ -1,9 +1,10 @@
 import express from 'express';
 import Lesson from '../models/Lesson.js';
+import verifyToken from '../middleware/verifyToken.js';
 
 const router = express.Router();
 
-router.post('/create', async (req, res) => {
+router.post('/create', verifyToken, async (req, res) => {
   try {
     const lesson = new Lesson(req.body);
 

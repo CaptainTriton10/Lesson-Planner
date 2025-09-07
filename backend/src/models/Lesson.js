@@ -5,7 +5,7 @@ const lessonSchema = new mongoose.Schema({
   lessonName: { type: String, required: true },
   lessonTitle: { type: String },
   date: { type: String, required: true },
-  period: { type: String, required: true },
+  period: { type: Number, required: true },
   room: { type: String },
 });
 

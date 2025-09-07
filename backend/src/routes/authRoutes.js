@@ -2,6 +2,7 @@ import { config } from 'dotenv';
 config();
 
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 import express from 'express';
 import mongoose from 'mongoose';
 import User from '../models/User.js';
@@ -46,11 +47,20 @@ router.post('/login', async (req, res) => {
       user.password,
       userInDb.password
     );
-    if (passwordCorrect) {
-      res.send('Login successful');
-    } else {
+
+    if (!passwordCorrect) {
       throw new Error('Password incorrect.');
     }
+
+    const token = jwt.sign(
+      { id: userInDb.id, username: user.username },
+      process.env.JWT_SECRET_KEY,
+      {
+        expiresIn: '1hr',
+      }
+    );
+
+    res.json({ token });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

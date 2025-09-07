@@ -2,7 +2,6 @@ import { config } from 'dotenv';
 config();
 
 import { MongoClient, ServerApiVersion } from 'mongodb';
-import mongoose from 'mongoose';
 
 const mongoDbUsername = encodeURIComponent(process.env.USER_NAME);
 const mongoDbPassword = encodeURIComponent(process.env.USER_PASSWORD);

@@ -1,1 +1,3 @@
 export const loginUrl = 'http://localhost:3000/auth/login';
+export const registerUrl = 'http://localhost:3000/auth/register';
+export const nameUrl = 'http://localhost:3000/user/name';

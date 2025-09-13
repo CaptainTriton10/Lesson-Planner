@@ -10,8 +10,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Particles } from '@/components/ui/particles';
 import { PasswordInput } from '@/components/ui/password-input';
-import { loginUrl } from '@/lib/urls';
-import { ArrowRight } from 'lucide-react';
+import { registerUrl } from '@/lib/urls';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
@@ -19,39 +18,45 @@ import { z } from 'zod';
 
 const FormSchema = z.object({
   username: z.string(),
+  name: z.string(),
   password: z.string(),
+  passwordConfirm: z.string,
 });
 
-function Login() {
+function Register() {
   const navigate = useNavigate();
 
   const onSubmit = (data: z.infer<typeof FormSchema>) => {
-    if (!data.username) {
-      toast.error('Please enter a username');
+    if (
+      !data.username ||
+      !data.name ||
+      !data.password ||
+      !data.passwordConfirm
+    ) {
+      toast.error('Please fill in all the details.');
       return;
-    } else if (!data.password) {
-      toast.error('Please enter a password');
+    }
+
+    if (data.password != data.passwordConfirm) {
+      toast.error('Passwords do not match.');
       return;
     }
 
     const xhr = new XMLHttpRequest();
-    xhr.open('POST', loginUrl);
+    xhr.open('POST', registerUrl);
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.send(
       JSON.stringify({
         username: data.username,
         password: data.password,
+        name: data.name,
       })
     );
     xhr.onload = () => {
       if (xhr.readyState == 4 && xhr.status < 300) {
-        toast.success('Login successful.');
+        toast.success('Registration successful.');
 
-        const token = JSON.parse(xhr.response).token;
-
-        localStorage.setItem('token', token);
-
-        navigate('/home');
+        navigate('/login');
       } else {
         toast.error('Login unsuccessful');
       }
@@ -65,11 +70,11 @@ function Login() {
       <div className="w-md flex flex-col gap-5">
         <div className="bg-white/1 backdrop-blur-sm p-5 rounded-xl border">
           <h1 className="text-4xl text-center mb-5">
-            <b>Login</b>
+            <b>Register</b>
           </h1>
           <Form {...form}>
             <form
-              className="flex flex-col gap-4"
+              className="flex flex-col gap-2.5"
               onSubmit={form.handleSubmit(onSubmit)}
             >
               <FormField
@@ -80,6 +85,19 @@ function Login() {
                     <FormLabel>Username</FormLabel>
                     <FormControl>
                       <Input placeholder="Username" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              ></FormField>
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Name</FormLabel>
+                    <FormControl>
+                      <Input placeholder="e.g: John" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -98,16 +116,24 @@ function Login() {
                   </FormItem>
                 )}
               ></FormField>
-              <Button type="submit">Login</Button>
+              <FormField
+                control={form.control}
+                name="passwordConfirm"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <PasswordInput
+                        placeholder="Confirm password"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              ></FormField>
+              <Button type="submit">Register</Button>
             </form>
           </Form>
-          <Button
-            variant="link"
-            onClick={() => navigate('/register')}
-            className="w-full mt-2.5"
-          >
-            New user? Sign up <ArrowRight />
-          </Button>
         </div>
       </div>
       <Particles
@@ -121,4 +147,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default Register;

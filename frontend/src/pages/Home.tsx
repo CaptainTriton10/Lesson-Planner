@@ -1,9 +1,11 @@
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
+import AvatarDropdown from '@/components/AvatarDropdown';
+import { nameUrl } from '@/lib/urls';
+import { jwtDecode, JwtPayload } from 'jwt-decode';
 import { ArrowRight } from 'lucide-react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'sonner';
 
 function NowCard() {
   return (
@@ -25,57 +27,66 @@ function NowCard() {
   );
 }
 
-function Home() {
-  const navigate = useNavigate();
+interface UserPayload extends JwtPayload {
+  username: string;
+  id: string;
+}
 
-  useEffect(() => {
-    if (!localStorage.getItem('token')) {
-      navigate('/login');
-    }
+async function getName(token: string): Promise<string> {
+  const res = await fetch(nameUrl, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
   });
 
-  const onSubmit = () => {
-    const xhr = new XMLHttpRequest();
-    xhr.open('POST', 'http://localhost:3000/lesson/create');
-    xhr.setRequestHeader('Content-Type', 'application/json');
+  return res.text();
+}
 
+function Home() {
+  const navigate = useNavigate();
+  const [user, setUser] = useState<UserPayload>();
+  const [name, setName] = useState('');
+
+  useEffect(() => {
     const token = localStorage.getItem('token');
-    if (!token) return toast.error('No token provided.');
 
-    xhr.setRequestHeader('Authorization', `Bearer ${token}`);
-    xhr.send(
-      JSON.stringify({
-        authorId: 'abcde',
-        lessonName: 'Maths',
-        lessonTitle: 'Intro to surds',
-        date: '2025-09-07',
-        period: '9',
-        room: 'Y22',
-      })
-    );
-    xhr.onload = () => {
-      if (xhr.readyState == 4 && xhr.status < 300) {
-        toast.success('Lesson created successfully.');
-      } else {
-        toast.error('Unsuccessful');
+    if (!token) {
+      navigate('/login');
+      return;
+    }
+
+    const decoded = jwtDecode<UserPayload>(token);
+    setUser(decoded);
+
+    getName(token).then(
+      (name: string) => {
+        setName(name);
+      },
+      () => {
+        setName('error');
       }
-    };
-  };
+    );
+  }, []);
 
   return (
-    <div className="w-vw h-screen flex justify-center">
-      <div className="w-xl h-full flex flex-col content-center flex-wrap">
-        <h1 className="text-6xl text-center mt-50">Hello, James.</h1>
-        <Button
-          variant="outline"
-          className="w-40 self-center mt-10"
-          onClick={() => navigate('/today')}
-        >
-          Today
-          <ArrowRight />
-        </Button>
-        <div className="flex-grow" />
-        <NowCard />
+    <div className="vw h-screen flex flex-col justify-center">
+      <div className="basis-1/12 flex p-2.5 justify-end">
+        <AvatarDropdown name={name} />
+      </div>
+      <div className="w-vw h-full flex justify-center">
+        <div className="w-xl h-full flex flex-col content-center flex-wrap">
+          <h1 className="text-6xl text-center mt-50">Hello, {name}.</h1>
+          <Button
+            variant="outline"
+            className="w-40 self-center mt-10"
+            onClick={() => navigate('/today')}
+          >
+            Today
+            <ArrowRight />
+          </Button>
+          <div className="flex-grow" />
+          <NowCard />
+        </div>
       </div>
     </div>
   );

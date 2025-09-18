@@ -27,3 +27,4 @@ backend/.vite/
 # IDE files
 .vscode/
 .idea/
+/qodana.yaml

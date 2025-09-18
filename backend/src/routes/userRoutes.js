@@ -12,7 +12,7 @@ const router = express.Router();
 mongoose.connect(uriMongoose);
 
 router.get('/name', verifyToken, async (req, res) => {
-  const user = await User.findOne({ _id: req.user.id });
+  const user = await User.findById(req.user.id);
 
   res.send(user.name);
 });

@@ -6,7 +6,7 @@ import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
 import { SquarePen, Trash } from 'lucide-react';
 
-export type Lesson = {
+export type LessonData = {
   period: number;
   title: string;
   location: string;
@@ -14,7 +14,7 @@ export type Lesson = {
   main: string;
 };
 
-export const columns: ColumnDef<Lesson>[] = [
+export const columns: ColumnDef<LessonData>[] = [
   {
     id: 'period',
     header: 'Period',
@@ -57,7 +57,10 @@ export const columns: ColumnDef<Lesson>[] = [
         <div className="flex flex-col">
           <span>{lesson.main}</span>
           <span className="text-muted-foreground text-xs">
-            <i>Note: {lesson.notes}</i>
+            <i>
+              {lesson.notes ? 'Note: ' : ''}
+              {lesson.notes}
+            </i>
           </span>
         </div>
       );

@@ -5,21 +5,12 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function getPeriodName(period: number) {
-  const periods = [
-    '0',
-    '1',
-    '2',
-    '3',
-    '4',
-    '5',
-    '6a',
-    '6b',
-    '7',
-    '8',
-    '9',
-    '10',
-  ];
+const periods = ['0', '1', '2', '3', '4', '5', '6a', '6b', '7', '8', '9', '10'];
 
+const NUM_PERIODS = periods.length;
+
+function getPeriodName(period: number) {
   return periods[period];
 }
+
+export { getPeriodName, NUM_PERIODS };

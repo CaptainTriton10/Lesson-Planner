@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { NavigateFunction, useNavigate } from 'react-router-dom';
 import { Avatar, AvatarFallback } from './ui/avatar';
 import {
   DropdownMenu,
@@ -14,7 +14,7 @@ type AvatarDropdownProps = {
   name: string;
 };
 
-function SignOut(navigate) {
+function SignOut(navigate: NavigateFunction) {
   localStorage.removeItem('token');
   navigate('/login');
 }

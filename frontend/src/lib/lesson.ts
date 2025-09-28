@@ -45,9 +45,10 @@ class Lesson {
 
   public getLessonData() {
     const lessonData: LessonData = {
-      period: this.period,
+      name: this.lessonName,
       title: this.lessonTitle,
-      location: this.room,
+      period: this.period,
+      room: this.room,
       notes: this.notes,
       main: this.main,
     };

@@ -3,13 +3,12 @@
 import { getPeriodName } from '@/lib/utils';
 import { ColumnDef } from '@tanstack/react-table';
 import { Badge } from '../ui/badge';
-import { Button } from '../ui/button';
-import { SquarePen, Trash } from 'lucide-react';
 
 export type LessonData = {
-  period: number;
+  name: string;
   title: string;
-  location: string;
+  period: number;
+  room: string;
   notes: string;
   main: string;
 };
@@ -18,7 +17,6 @@ export const columns: ColumnDef<LessonData>[] = [
   {
     id: 'period',
     header: 'Period',
-    size: 25,
     cell: ({ row }) => {
       const lesson = row.original;
 
@@ -38,11 +36,9 @@ export const columns: ColumnDef<LessonData>[] = [
       return (
         <div className="flex flex-col">
           <span className="text-lg">
-            <b>{lesson.title}</b>
+            <b>{lesson.name}</b>
           </span>
-          <span className="text-xs text-muted-foreground">
-            {lesson.location}
-          </span>
+          <span className="text-xs text-muted-foreground">{lesson.room}</span>
         </div>
       );
     },
@@ -55,7 +51,7 @@ export const columns: ColumnDef<LessonData>[] = [
 
       return (
         <div className="flex flex-col">
-          <span>{lesson.main}</span>
+          <span>{lesson.title}</span>
           <span className="text-muted-foreground text-xs">
             <i>
               {lesson.notes ? 'Note: ' : ''}
@@ -66,6 +62,9 @@ export const columns: ColumnDef<LessonData>[] = [
       );
     },
   },
+];
+
+/*
   {
     id: 'actions',
     header: '',
@@ -82,4 +81,4 @@ export const columns: ColumnDef<LessonData>[] = [
       );
     },
   },
-];
+*/

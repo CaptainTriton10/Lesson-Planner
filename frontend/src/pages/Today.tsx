@@ -1,4 +1,4 @@
-import { createLessonUrl, getAllLessonsUrl } from '@/lib/urls';
+import { getAllLessonsUrl } from '@/lib/urls';
 import Lesson, { LessonJSON } from '@/lib/lesson.ts';
 import { useEffect, useState } from 'react';
 import { columns, LessonData } from '@/components/timetable/columns.tsx';
@@ -20,26 +20,6 @@ async function getAllLessons(token: string | null) {
   });
 
   return lessons;
-}
-
-function addLesson(token: string | null) {
-  const xhr = new XMLHttpRequest();
-  xhr.open('POST', createLessonUrl);
-  xhr.setRequestHeader('Content-Type', 'application/json');
-  xhr.setRequestHeader('Authorization', `Bearer ${token}`);
-  xhr.send(
-    JSON.stringify({
-      lessonName: 'Chemistry - States of Matter',
-      lessonTitle: 'Understanding Solids, Liquids, and Gases',
-      date: '2025-09-18',
-      period: 1,
-      room: 'Lab A1',
-      notes: 'Focus on particle diagrams; remind students about safety rules.',
-      starter: 'Quick quiz on changes of state symbols.',
-      main: 'Explain particle theory and demonstrate melting ice.',
-      plenary: 'Students summarize the differences in groups and share.',
-    })
-  );
 }
 
 function generateBaseLessons(fetchedLessons: Lesson[]) {
@@ -82,9 +62,9 @@ function Today() {
   }, [token]);
 
   return (
-    <div className="flex flex-col gap-2.5 p-2.5">
+    <div className="flex flex-col gap-2.5 p-2.5 items-center">
       <div className="w-full h-20 rounded-md border"></div>
-      <div className="p-2.5 rounded-md bg-primary-foreground">
+      <div className="w-3/4 p-2.5 rounded-md bg-primary-foreground">
         <Timetable columns={columns} data={data} />
       </div>
     </div>

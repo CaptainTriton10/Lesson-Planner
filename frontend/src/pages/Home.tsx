@@ -6,6 +6,7 @@ import { jwtDecode, JwtPayload } from 'jwt-decode';
 import { ArrowRight } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { verifyToken } from '@/lib/utils.ts';
 
 function NowCard() {
   return (
@@ -50,7 +51,7 @@ function Home() {
   useEffect(() => {
     const token = localStorage.getItem('token');
 
-    if (!token) {
+    if (!token || verifyToken(token)) {
       navigate('/login');
       return;
     }

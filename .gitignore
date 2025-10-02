@@ -28,3 +28,4 @@ backend/.vite/
 .vscode/
 .idea/
 /qodana.yaml
+/.vercel/

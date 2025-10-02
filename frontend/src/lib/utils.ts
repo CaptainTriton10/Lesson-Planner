@@ -18,8 +18,6 @@ function verifyToken(token: string) {
   try {
     const decoded = jwtDecode(token);
 
-    console.log(decoded, decoded.exp, Date.now() / 1000);
-
     if (!decoded.exp) return false;
 
     return decoded.exp <= Date.now() / 1000;

@@ -11,6 +11,8 @@ const uriMongooseMain = process.env.URI_MONGOOSE;
 const uri = `mongodb+srv://${mongoDbUsername}:${mongoDbPassword}${uriMain}`;
 const uriMongoose = `mongodb+srv://${mongoDbUsername}:${mongoDbPassword}${uriMongooseMain}`;
 
+console.log(uri);
+
 // MongoDB client
 const client = new MongoClient(uri, {
   serverApi: {

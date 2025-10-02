@@ -45,7 +45,7 @@ async function getName(token: string): Promise<string> {
 
 function Home() {
   const navigate = useNavigate();
-  const [user, setUser] = useState<UserPayload>();
+  const [_user, setUser] = useState<UserPayload>();
   const [name, setName] = useState('');
 
   useEffect(() => {

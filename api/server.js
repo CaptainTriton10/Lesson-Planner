@@ -3,6 +3,7 @@ import cors from 'cors';
 import authRoutes from './routes/authRoutes.js';
 import lessonRoutes from './routes/lessonRoutes.js';
 import userRoutes from './routes/userRoutes.js';
+import serverless from 'serverless-http';
 
 const app = express();
 app.use(express.json());
@@ -16,6 +17,4 @@ app.get('/', (req, res) => {
   res.send('Connected to server.');
 });
 
-app.listen(3000, () => {
-  console.log('Server is connected on http://localhost:3000');
-});
+export const handler = serverless(app);

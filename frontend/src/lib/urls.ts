@@ -1,5 +1,5 @@
-export const loginUrl = 'http://localhost:3000/auth/login';
-export const registerUrl = 'http://localhost:3000/auth/register';
-export const nameUrl = 'http://localhost:3000/user/name';
-export const getAllLessonsUrl = 'http://localhost:3000/lesson/get/all';
-export const createLessonUrl = 'http://localhost:3000/lesson/create';
+export const loginUrl = '/api/auth/login';
+export const registerUrl = '/api/auth/register';
+export const nameUrl = '/api/user/name';
+export const getAllLessonsUrl = '/api/lesson/get/all';
+export const createLessonUrl = '/api/lesson/create';

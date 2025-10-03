@@ -1,5 +1,5 @@
-export const loginUrl = '/api/auth/login';
-export const registerUrl = '/api/auth/register';
-export const nameUrl = '/api/user/name';
-export const getAllLessonsUrl = '/api/lesson/get/all';
-export const createLessonUrl = '/api/lesson/create';
+export const loginUrl = '/auth/login';
+export const registerUrl = '/auth/register';
+export const nameUrl = '/user/name';
+export const getAllLessonsUrl = '/lesson/get/all';
+export const createLessonUrl = '/lesson/create';

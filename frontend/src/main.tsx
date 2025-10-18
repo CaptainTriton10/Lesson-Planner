@@ -11,6 +11,7 @@ import {
   Navigate,
   RouterProvider,
 } from 'react-router-dom';
+import { Analytics } from '@vercel/analytics/react';
 
 export const router = createBrowserRouter([
   { path: '/home', element: <Home /> },
@@ -24,5 +25,6 @@ createRoot(document.getElementById('root')!).render(
   <ThemeProvider defaultTheme="dark">
     <RouterProvider router={router} />
     <Toaster position="bottom-center" />
-  </ThemeProvider>,
+    <Analytics />
+  </ThemeProvider>
 );
